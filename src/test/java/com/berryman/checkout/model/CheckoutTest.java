@@ -19,6 +19,8 @@ class CheckoutTest {
 
   private Product a = new Product("A", BigDecimal.valueOf(50));
   private Product b = new Product("B", BigDecimal.valueOf(30));
+  private Product c = new Product("C", BigDecimal.valueOf(20));
+  private Product d = new Product("D", BigDecimal.valueOf(15));
   private Set<PricingRule> pricingRules = new HashSet<>();
   private List<Product> items = new ArrayList<>();
   private Checkout subject;
@@ -106,6 +108,48 @@ class CheckoutTest {
     BigDecimal result = subject.total();
 
     assertThat(result, is(BigDecimal.valueOf(350)));
+  }
+
+  @Test
+  void totalShouldCalculateTotalForTwoBsOneATwoCsAndOneD() {
+    subject.scan(b);
+    subject.scan(a);
+    subject.scan(b);
+    subject.scan(c);
+    subject.scan(c);
+    subject.scan(d);
+
+    BigDecimal result = subject.total();
+
+    assertThat(result, is(BigDecimal.valueOf(150)));
+  }
+
+  @Test
+  void totalShouldCalculateTotalForCollectionWithNoPromotionalItems() {
+    subject.scan(a);
+    subject.scan(b);
+    subject.scan(c);
+    subject.scan(d);
+
+    BigDecimal result = subject.total();
+
+    assertThat(result, is(BigDecimal.valueOf(115)));
+  }
+
+  @Test
+  void totalShouldCalculateTotalForAnotherCollectionWithNoPromotionalItems() {
+    subject.scan(a);
+    subject.scan(a);
+    subject.scan(b);
+    subject.scan(c);
+    subject.scan(c);
+    subject.scan(c);
+    subject.scan(d);
+    subject.scan(d);
+
+    BigDecimal result = subject.total();
+
+    assertThat(result, is(BigDecimal.valueOf(220)));
   }
 
   @AfterEach
