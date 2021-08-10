@@ -8,11 +8,11 @@
     
 ```
 
-- Products are immutable so when are added to the pricing rules; a scanned promotional product needs to have the
+- Products are immutable so when they are added to the pricing rules; a scanned promotional product needs to have the
 same price and SKU to be recognised as a promotional item. Otherwise, the assumption is that a promotional product 
   without the promotional price for this week is not valid for discount. If the requirements were such that items with 
   the same SKU but different price were valid for discount; changing `Checkout.java:line 33` to 
-  `(int) items.stream().filter(item -> pricingRule.getItem().getSku().equals(item.getSku())).count()` would enable 
+  `(int) items.stream().filter(item -> pricingRule.getItem().getSku().equals(item.getSku())).count();` would enable 
   discounts to be applied to promotional items based on SKU only.
   
 - The `main` method accepts user input to scan one product at a time. An improvement on this may be to read a CSV file
@@ -26,7 +26,7 @@ The `apply()` operation described in this interface can have custom logic to cal
   
 - The rules required to determine the discounts as per the requirements have common operations which have been placed in 
 the `BasePercentageDiscountRule` class which is a `PricingRule`, this could be changed so that there is just a
-  `PercentageDiscount` class with `purchaseThreshold` and `discountPercentage` constructor parameters. If there were 
-  additional rules to add to one of the concrete discount rules, however, this approach may prove difficult to extend, 
-  hence the separate concrete discount rule implementations.
+  `PercentageDiscount` class with `purchaseThreshold` and `discountPercentage` constructor parameters. If there was 
+  additional business logic to add to one of the concrete discount rules, however, this approach may prove difficult to 
+  extend, hence the separate concrete percentage discount rule subclasses.
   
