@@ -7,9 +7,9 @@ import com.berryman.checkout.model.Product;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
-class BuyThreeDiscountTest {
+class BuyThreeDiscountRuleTest {
 
-  private Product buyThreeSpecialItem = new Product("A", new BigDecimal(50));
+  private Product buyThreeSpecialItem = new Product("A", BigDecimal.valueOf(50));
 
   @Test
   void itShouldCalculateTheDiscountForThreeItems() {

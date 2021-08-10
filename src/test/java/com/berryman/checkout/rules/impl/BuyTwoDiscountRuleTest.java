@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class BuyTwoDiscountRuleTest {
 
-  private Product buyTwoSpecialItem = new Product("B", new BigDecimal(30));
+  private Product buyTwoSpecialItem = new Product("B", BigDecimal.valueOf(30));
 
   @Test
   void itShouldCalculateTheDiscountForTwoItems() {
