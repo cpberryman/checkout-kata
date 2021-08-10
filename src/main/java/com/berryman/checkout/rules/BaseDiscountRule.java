@@ -2,12 +2,12 @@ package com.berryman.checkout.rules;
 
 import com.berryman.checkout.model.Product;
 
-public abstract class BasePercentageDiscountRule implements PricingRule {
+public abstract class BaseDiscountRule implements PricingRule {
 
   private final Product item;
   private int itemCount;
 
-  protected BasePercentageDiscountRule(Product item) {
+  protected BaseDiscountRule(Product item) {
     this.item = item;
   }
 

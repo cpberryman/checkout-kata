@@ -27,6 +27,10 @@ public class App {
     checkout = new Checkout(pricingRules, new ArrayList<>());
   }
 
+  /**
+   * Takes user input for SKUs and item prices in turn, instantiates and scans product with
+   * checkout. Space bar can be pressed at any time to print the total with the discount applied.
+   */
   public static void main(String[] args) {
 
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -41,6 +45,7 @@ public class App {
 
         String sku = "";
         BigDecimal price = BigDecimal.ZERO;
+
         if (inputSku.equals(" ")) {
           done = true;
         } else {
@@ -52,7 +57,11 @@ public class App {
           if (inputPrice.equals(" ")) {
             done = true;
           } else {
-            price = BigDecimal.valueOf(Integer.parseInt(inputPrice));
+            try {
+              price = BigDecimal.valueOf(Integer.parseInt(inputPrice));
+            } catch (NumberFormatException e) {
+              System.out.println("Product not scanned, please enter a valid price in pence");
+            }
           }
         }
 

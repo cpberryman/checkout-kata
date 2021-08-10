@@ -4,7 +4,7 @@
 ```
     int total = 130;
     
-    BigDecimal.valueOf(total).divide(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP); // 1.30
+    BigDecimal.valueOf(total).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP); // 1.30
     
 ```
 
@@ -24,9 +24,10 @@ The `apply()` operation described in this interface can have custom logic to cal
   to determine if the number of promotional items have met the purchase threshold required by the promotional rule for 
   discount.
   
-- The rules required to determine the discounts as per the requirements have common operations which have been placed in 
-the `BasePercentageDiscountRule` class which is a `PricingRule`, this could be changed so that there is just a
+- The rules required to determine the discounts as per the requirements have common members which have been placed in 
+the `BaseDiscountRule` class which is a `PricingRule`, this could be changed so that there is just a
   `PercentageDiscount` class with `purchaseThreshold` and `discountPercentage` constructor parameters. If there was 
   additional business logic to add to one of the concrete discount rules, however, this approach may prove difficult to 
-  extend, hence the separate concrete percentage discount rule subclasses.
+  extend. Therefore, there are separate discount rule subclasses with static variables for purchase threshold and discount percentage
+  for readability.
   
