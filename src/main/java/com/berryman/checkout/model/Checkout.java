@@ -39,7 +39,7 @@ public class Checkout {
   private BigDecimal totalForNonPromotionalItems() {
     List<Product> promotionalItems =
         pricingRules.stream()
-            .map(pricingRule -> pricingRule.getItem())
+            .map(PricingRule::getItem)
             .collect(Collectors.toList());
 
     List<Product> nonPromotionalItems =
@@ -60,7 +60,4 @@ public class Checkout {
         .orElse(BigDecimal.valueOf(0));
   }
 
-  public void reset() {
-    this.items.clear();
-  }
 }

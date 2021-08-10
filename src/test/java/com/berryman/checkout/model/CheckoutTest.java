@@ -7,10 +7,8 @@ import com.berryman.checkout.rules.PricingRule;
 import com.berryman.checkout.rules.impl.BuyThreeDiscountRule;
 import com.berryman.checkout.rules.impl.BuyTwoDiscountRule;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,118 +40,73 @@ class CheckoutTest {
   }
 
   @Test
-  void totalShouldCalculateTotalForTwoBsAndOneA() {
-    subject.scan(b);
-    subject.scan(a);
-    subject.scan(b);
+  void totalShouldCalculateTotalWithDiscountToPromotionalItemsWithPurchaseThresholdOfTwo() {
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(b, a, b));
 
     assertThat(result, is(BigDecimal.valueOf(95)));
   }
 
   @Test
-  void totalShouldCalculateTotalForThreeAsAndOneB() {
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(b);
+  void totalShouldCalculateTotalWithDiscountToPromotionalItemsWithPurchaseThresholdOfThree() {
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(a, a, a, b));
 
     assertThat(result, is(BigDecimal.valueOf(160)));
   }
 
   @Test
-  void totalShouldCalculateTotalForThreeAsAndTwoBs() {
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(b);
-    subject.scan(b);
+  void totalShouldCalculateTotalWithDiscountForAllPromotionalItemsWhenPurchaseThresholdIsReached() {
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(a, a, a, b, b));
 
     assertThat(result, is(BigDecimal.valueOf(175)));
   }
 
   @Test
-  void totalShouldCalculateTotalForForAsAndThreeBs() {
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(b);
-    subject.scan(b);
-    subject.scan(b);
+  void totalShouldCalculateTotalAndApplyDiscountToItemsThatReachPurchaseThresholdOnly() {
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(a, a, a, a, b, b, b));
 
     assertThat(result, is(BigDecimal.valueOf(255)));
   }
 
   @Test
-  void totalShouldCalculateTotalForSixAsAndFourBs() {
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(b);
-    subject.scan(b);
-    subject.scan(b);
-    subject.scan(b);
+  void totalShouldCalculateTotalWithDiscountForMultiplesOfPromotionalItemsThatReachPurchaseThreshold() {
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(a, a, a, a, a, a, b, b, b, b));
 
     assertThat(result, is(BigDecimal.valueOf(350)));
   }
 
   @Test
-  void totalShouldCalculateTotalForTwoBsOneATwoCsAndOneD() {
-    subject.scan(b);
-    subject.scan(a);
-    subject.scan(b);
-    subject.scan(c);
-    subject.scan(c);
-    subject.scan(d);
+  void totalShouldCalculateTotalWithDiscountToPromotionalItemsWithPurchaseThresholdOfTwoAndNonPromotionalItems() {
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(b, a, b, c, c, d));
 
     assertThat(result, is(BigDecimal.valueOf(150)));
   }
 
   @Test
   void totalShouldCalculateTotalForCollectionWithNoPromotionalItems() {
-    subject.scan(a);
-    subject.scan(b);
-    subject.scan(c);
-    subject.scan(d);
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(a, b, c, d));
 
     assertThat(result, is(BigDecimal.valueOf(115)));
   }
 
   @Test
   void totalShouldCalculateTotalForAnotherCollectionWithNoPromotionalItems() {
-    subject.scan(a);
-    subject.scan(a);
-    subject.scan(b);
-    subject.scan(c);
-    subject.scan(c);
-    subject.scan(c);
-    subject.scan(d);
-    subject.scan(d);
 
-    BigDecimal result = subject.total();
+    BigDecimal result = getTotalFromCheckout(Arrays.asList(a, a, b, c, c, c, d, d));
 
     assertThat(result, is(BigDecimal.valueOf(220)));
   }
 
-  @AfterEach
-  public void TearDown() {
-    subject.reset();
+  private BigDecimal getTotalFromCheckout(List<Product> products) {
+    products.forEach(product -> subject.scan(product));
+
+    return subject.total();
   }
+
 }
