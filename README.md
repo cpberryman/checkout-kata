@@ -19,7 +19,7 @@ same price and SKU to be recognised as a promotional item. Otherwise, the assump
 with SKUs and prices, instantiate and scan products, then calculate the total to automate this. For demo purposes, the 
   promotional products are initialised when the `App` class loads. A further extension would be to take user input for 
   promotional items and instantiate the rules with promotional products derived from user input. This would enable adding 
-  additional rules to the `Set` of promotional rules used by the checkout.
+  additional rules to the `Set` of promotional rules used by the `Checkout`.
   
 - There is a `PricingRule` interface that could have implementations for Buy One Get One Free rules for example.
 The `apply()` operation described in this interface can have custom logic to calculate a total with discount. `getItem()`
