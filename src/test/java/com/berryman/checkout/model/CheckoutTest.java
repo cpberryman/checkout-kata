@@ -8,8 +8,6 @@ import com.berryman.checkout.rules.impl.BuyThreeDiscountRule;
 import com.berryman.checkout.rules.impl.BuyTwoDiscountRule;
 import java.math.BigDecimal;
 import java.util.*;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,7 +70,8 @@ class CheckoutTest {
   }
 
   @Test
-  void totalShouldCalculateTotalWithDiscountForMultiplesOfPromotionalItemsThatReachPurchaseThreshold() {
+  void
+      totalShouldCalculateTotalWithDiscountForMultiplesOfPromotionalItemsThatReachPurchaseThreshold() {
 
     BigDecimal result = getTotalFromCheckout(Arrays.asList(a, a, a, a, a, a, b, b, b, b));
 
@@ -80,7 +79,8 @@ class CheckoutTest {
   }
 
   @Test
-  void totalShouldCalculateTotalWithDiscountToPromotionalItemsWithPurchaseThresholdOfTwoAndNonPromotionalItems() {
+  void
+      totalShouldCalculateTotalWithDiscountToPromotionalItemsWithPurchaseThresholdOfTwoAndNonPromotionalItems() {
 
     BigDecimal result = getTotalFromCheckout(Arrays.asList(b, a, b, c, c, d));
 
@@ -108,5 +108,4 @@ class CheckoutTest {
 
     return subject.total();
   }
-
 }

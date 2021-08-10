@@ -5,11 +5,11 @@ import com.berryman.checkout.model.Product;
 import com.berryman.checkout.rules.PricingRule;
 import com.berryman.checkout.rules.impl.BuyThreeDiscountRule;
 import com.berryman.checkout.rules.impl.BuyTwoDiscountRule;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class App {
 
@@ -29,33 +29,39 @@ public class App {
 
   public static void main(String[] args) {
 
-    Scanner scanner = new Scanner(System.in);
+    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     boolean done = false;
 
     while (!done) {
 
-      System.out.println("Please enter sku or type 'T' for total: ");
-      String inputSku = scanner.next();
+      try {
 
-      String sku = "";
-      BigDecimal price = BigDecimal.ZERO;
-      if (inputSku.equalsIgnoreCase("T")) {
-        done = true;
-      } else {
-        sku = inputSku;
+        System.out.println("Please enter SKU, space bar to exit: ");
+        String inputSku = in.readLine();
 
-        System.out.println("Please enter the price or type 'T' for total: ");
-        String inputPrice = scanner.next();
-
-        if (inputPrice.equalsIgnoreCase("T")) {
+        String sku = "";
+        BigDecimal price = BigDecimal.ZERO;
+        if (inputSku.equals(" ")) {
           done = true;
         } else {
-          price = BigDecimal.valueOf(Integer.parseInt(inputPrice));
-        }
-      }
+          sku = inputSku;
 
-      Product product = new Product(sku, price);
-      checkout.scan(product);
+          System.out.println("Please enter the price, space bar for total: ");
+          String inputPrice = in.readLine();
+
+          if (inputPrice.equals(" ")) {
+            done = true;
+          } else {
+            price = BigDecimal.valueOf(Integer.parseInt(inputPrice));
+          }
+        }
+
+        Product product = new Product(sku, price);
+        checkout.scan(product);
+
+      } catch (IOException e) {
+        System.out.println(Arrays.toString(e.getStackTrace()));
+      }
     }
 
     System.out.println("total: " + checkout.total());

@@ -29,18 +29,16 @@ public class Checkout {
 
   private void countPromotionalItemsForPricingRules() {
     for (PricingRule pricingRule : pricingRules) {
-      int specialItemCount =
+      int promotionalItemCount =
           (int) items.stream().filter(item -> pricingRule.getItem().equals(item)).count();
 
-      pricingRule.setItemCount(specialItemCount);
+      pricingRule.setItemCount(promotionalItemCount);
     }
   }
 
   private BigDecimal totalForNonPromotionalItems() {
     List<Product> promotionalItems =
-        pricingRules.stream()
-            .map(PricingRule::getItem)
-            .collect(Collectors.toList());
+        pricingRules.stream().map(PricingRule::getItem).collect(Collectors.toList());
 
     List<Product> nonPromotionalItems =
         items.stream()
@@ -59,5 +57,4 @@ public class Checkout {
         .reduce(BigDecimal::add)
         .orElse(BigDecimal.valueOf(0));
   }
-
 }
