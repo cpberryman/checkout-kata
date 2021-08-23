@@ -3,8 +3,8 @@ package com.berryman.checkout;
 import com.berryman.checkout.model.Checkout;
 import com.berryman.checkout.model.Product;
 import com.berryman.checkout.rules.PricingRule;
-import com.berryman.checkout.rules.impl.BuyThreeDiscountRule;
-import com.berryman.checkout.rules.impl.BuyTwoDiscountRule;
+import com.berryman.checkout.rules.impl.DiscountRule;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,8 +20,8 @@ public class App {
     pricingRules = new HashSet<>();
     Product a = new Product("A", BigDecimal.valueOf(50));
     Product b = new Product("B", BigDecimal.valueOf(30));
-    PricingRule buyThreeRule = new BuyThreeDiscountRule(a);
-    PricingRule buyTwoRule = new BuyTwoDiscountRule(b);
+    PricingRule buyThreeRule = new DiscountRule(a, 3, new BigDecimal("13.33333"));
+    PricingRule buyTwoRule = new DiscountRule(b, 2, BigDecimal.valueOf(25));
     pricingRules.add(buyThreeRule);
     pricingRules.add(buyTwoRule);
     checkout = new Checkout(pricingRules, new ArrayList<>());

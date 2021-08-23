@@ -7,7 +7,5 @@ public interface PricingRule {
 
   Product getItem();
 
-  void setItemCount(int itemCount);
-
-  BigDecimal apply();
+  BigDecimal apply(int itemCount);
 }

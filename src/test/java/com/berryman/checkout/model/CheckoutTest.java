@@ -4,10 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.berryman.checkout.rules.PricingRule;
-import com.berryman.checkout.rules.impl.BuyThreeDiscountRule;
-import com.berryman.checkout.rules.impl.BuyTwoDiscountRule;
+
 import java.math.BigDecimal;
 import java.util.*;
+
+import com.berryman.checkout.rules.impl.DiscountRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +23,9 @@ class CheckoutTest {
   private Checkout subject;
 
   @BeforeEach
-  public void init() {
-    PricingRule buyThreeDiscountRule = new BuyThreeDiscountRule(a);
-    PricingRule buyTwoDiscountRule = new BuyTwoDiscountRule(b);
+  void init() {
+    PricingRule buyThreeDiscountRule = new DiscountRule(a, 3, new BigDecimal("13.33333"));
+    PricingRule buyTwoDiscountRule = new DiscountRule(b, 2, BigDecimal.valueOf(25));
     pricingRules.add(buyThreeDiscountRule);
     pricingRules.add(buyTwoDiscountRule);
     subject = new Checkout(pricingRules, items);

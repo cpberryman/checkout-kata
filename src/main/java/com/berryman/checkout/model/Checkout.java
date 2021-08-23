@@ -2,7 +2,9 @@ package com.berryman.checkout.model;
 
 import com.berryman.checkout.rules.PricingRule;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,18 +24,23 @@ public class Checkout {
 
   public BigDecimal total() {
 
-    countPromotionalItemsForPricingRules();
-
-    return totalForNonPromotionalItems().add(totalForPromotionalItems());
+    return totalForNonPromotionalItems().add(totalForPromotionalItems(promotionalItemCounts()));
   }
 
-  private void countPromotionalItemsForPricingRules() {
-    for (PricingRule pricingRule : pricingRules) {
-      int promotionalItemCount =
-          (int) items.stream().filter(item -> pricingRule.getItem().equals(item)).count();
+  private Map<Product, Integer> promotionalItemCounts() {
 
-      pricingRule.setItemCount(promotionalItemCount);
+    Map<Product, Integer> promotionalItemCounts = new HashMap<>();
+
+    for (PricingRule pricingRule : pricingRules) {
+
+      items.forEach(item -> {
+        if (pricingRule.getItem().equals(item)) {
+          promotionalItemCounts.put(item, promotionalItemCounts.getOrDefault(item, 0) + 1);
+        }
+      });
     }
+
+    return promotionalItemCounts;
   }
 
   private BigDecimal totalForNonPromotionalItems() {
@@ -51,9 +58,10 @@ public class Checkout {
         .orElse(BigDecimal.valueOf(0));
   }
 
-  private BigDecimal totalForPromotionalItems() {
+  private BigDecimal totalForPromotionalItems(Map <Product, Integer> promotionalItemCounts) {
+
     return pricingRules.stream()
-        .map(PricingRule::apply)
+        .map(rule -> rule.apply(promotionalItemCounts.get(rule.getItem())))
         .reduce(BigDecimal::add)
         .orElse(BigDecimal.valueOf(0));
   }
